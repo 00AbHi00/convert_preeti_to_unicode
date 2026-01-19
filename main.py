@@ -16,11 +16,9 @@ def is_legacy_font(run):
     # Direct font
     if run.font.name and run.font.name.lower() in LEGACY_FONTS:
         return True
-
     # Inherited from style
     if run.style and run.style.font.name:
         return run.style.font.name.lower() in LEGACY_FONTS
-
     return False
 
 
@@ -34,18 +32,15 @@ def convert_runs(runs, mapper):
 def convert_docx_preserve_everything(input_docx, output_docx, map_file="map.json"):
     doc = Document(input_docx)
     mapper = npttf2utf.FontMapper(map_file)
-
     # Convert paragraphs
     for para in doc.paragraphs:
         convert_runs(para.runs, mapper)
-
     # Convert tables
     for table in doc.tables:
         for row in table.rows:
             for cell in row.cells:
                 for para in cell.paragraphs:
                     convert_runs(para.runs, mapper)
-
     # Headers & footers (often missed!)
     for section in doc.sections:
         for para in section.header.paragraphs:
@@ -54,18 +49,25 @@ def convert_docx_preserve_everything(input_docx, output_docx, map_file="map.json
             convert_runs(para.runs, mapper)
     doc.save(output_docx)
 
-def openFile1():
-   # Create root window
-    root = Tk()
-    root.withdraw()  # Hides the root window
-    # Without 
-    filepath= filedialog.askopenfilename(
-        title="Open word file",
-        filetypes=[("Word files","*.docx"
-                   )])
-    root.destroy()  # Clean up
-    return filepath
-    
+
+# custom warning 
+def show_red_warning(title, message):
+    win = Toplevel(root)
+    win.title(title)
+    win.configure(bg="red")
+    win.geometry("450x200")
+    win.resizable(False, False)
+
+    # Create a Text widget for copyable message
+    text_widget = Text(win, bg="red", fg="white", font=("Arial", 12, "bold"), wrap="word")
+    text_widget.insert("1.0", message)
+    text_widget.config(state="disabled")  # make it read-only
+    text_widget.pack(expand=True, fill="both", padx=20, pady=20)
+
+    # Button to close
+    Button(win, text="OK", command=win.destroy, bg="white", fg="red", width=10).pack(pady=10)
+    win.grab_set()  # modal window
+
 
 def select_input_file():
     file_path = filedialog.askopenfilename(title="Select Word File", filetypes=[("Word files","*.docx")])
@@ -89,6 +91,9 @@ def convert_file():
         messagebox.showwarning("Warning", "Please specify output file path.")
         return
     try:
+        if not output_path.lower().endswith(".docx"):
+            show_red_warning("Invalid file", "Please save the file with a .docx extension.")
+            return
         convert_docx_preserve_everything(input_path, output_path)
         messagebox.showinfo("Success", f"File converted and saved to:\n{output_path}")
     except Exception as e:
@@ -106,12 +111,12 @@ def show_output_field():
         output_var.set(default_output)
         Label(root, text="Output File:").grid(row=1, column=0, padx=20, pady=20, sticky=E)
         Entry(root, textvariable=output_var, width=80).grid(row=1, column=1, padx=20, pady=20, sticky=W) 
-       
+        Button(root, text="Browse", command=select_output_file, width=15).grid(row=1, column=2, padx=20)
    
 if __name__ == "__main__":
     root = Tk()
     root.title("Nepali Unicode Converter")
-    root.geometry(f"{root.winfo_screenwidth()}x{root.winfo_screenheight()}")  # full page
+    # root.geometry(f"{root.winfo_screenwidth()}x{root.winfo_screenheight()}")  # full page
 
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=3)
