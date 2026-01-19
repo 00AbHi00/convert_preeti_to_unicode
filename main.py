@@ -63,7 +63,6 @@ def show_red_warning(title, message):
     text_widget.insert("1.0", message)
     text_widget.config(state="disabled")  # make it read-only
     text_widget.pack(expand=True, fill="both", padx=20, pady=20)
-
     # Button to close
     Button(win, text="OK", command=win.destroy, bg="white", fg="red", width=10).pack(pady=10)
     win.grab_set()  # modal window
@@ -101,18 +100,19 @@ def convert_file():
     
     
 def show_output_field():
-    if input_var.get():  # check if input_var has value
-        default_output = os.path.join(os.getcwd(), "output", f"output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx")
-       # Match the slash style of input file
-        if '/' in input_var.get():
-            default_output = default_output.replace('\\', '/')
-        else:
-            default_output = default_output.replace('/', '\\')
-        output_var.set(default_output)
-        Label(root, text="Output File:").grid(row=1, column=0, padx=20, pady=20, sticky=E)
-        Entry(root, textvariable=output_var, width=80).grid(row=1, column=1, padx=20, pady=20, sticky=W) 
-        Button(root, text="Browse", command=select_output_file, width=15).grid(row=1, column=2, padx=20)
-   
+    default_output = os.path.join(os.getcwd(), "output", f"output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx")
+    # Match the slash style of input file    
+    output_var.set('default_output')    
+    if '/' in input_var.get():
+        default_output = default_output.replace('\\', '/')
+    else:
+        default_output = default_output.replace('/', '\\')
+    output_var.set(default_output)
+    Label(root, text="Output File:").grid(row=1, column=0, padx=20, pady=20, sticky=E)
+    Entry(root, textvariable=output_var, width=80).grid(row=1, column=1, padx=20, pady=20, sticky=W) 
+    Button(root, text="Browse", command=select_output_file, width=15).grid(row=1, column=2, padx=20)
+
+      
 if __name__ == "__main__":
     root = Tk()
     root.title("Nepali Unicode Converter")
@@ -126,6 +126,12 @@ if __name__ == "__main__":
     Label(root, text="Input File:").grid(row=0, column=0, padx=20, pady=20, sticky=E)
     Entry(root, textvariable=input_var, width=80).grid(row=0, column=1, padx=20, pady=20, sticky=W)
     Button(root, text="Browse", command=select_input_file, width=15).grid(row=0, column=2, padx=20)
+
+    # Output widgets (always visible)
+    Label(root, text="Output File:").grid(row=1, column=0, padx=20, pady=20, sticky=E)
+    Entry(root, textvariable=output_var, width=80).grid(row=1, column=1, padx=20, pady=20, sticky=W)
+    Button(root, text="Browse", command=select_output_file, width=15).grid(row=1, column=2, padx=20)
+
 
     Button(root, text="Convert to Unicode", command=convert_file, bg="#4CAF50", fg="white",
         font=("Arial", 14, "bold"), width=25, height=2).grid(row=2, column=0, columnspan=3, pady=40)
