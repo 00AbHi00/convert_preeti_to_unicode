@@ -1,0 +1,1 @@
+First of all I'd like to thank "https://github.com/casualsnek/npttf2utf/blob/main/src/npttf2utf/map.json" This repo for awsome package. This consists of character maps for the project
