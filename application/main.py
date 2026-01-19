@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=3)
-
+    root.iconbitmap(default='icon.ico')
     input_var = StringVar()
     output_var = StringVar()
     Label(root, text="Input File:").grid(row=0, column=0, padx=20, pady=20, sticky=E)

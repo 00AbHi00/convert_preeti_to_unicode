@@ -12,7 +12,7 @@
 >> pyinstaller --onefile --windowed --icon=icon.ico --add-data "map.json;." main.py        
 
 After running this there will be build files, and dist file
-### Make sure there is output folder, because without it the program won't run and will give an error.
+### Make sure there is output folder(this issue is fixed the program automatically makes the output folder), because without it the program won't run and will give an error. 
 
 >> The code is not written for any monetory beneifts and aims to solve a challenge i face everyday
 
