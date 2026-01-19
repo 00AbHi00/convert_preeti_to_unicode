@@ -127,6 +127,9 @@ if __name__ == "__main__":
     root.title("Nepali Unicode Converter")
     # root.geometry(f"{root.winfo_screenwidth()}x{root.winfo_screenheight()}")  # full page
 
+    if not os.path.exists('output'):
+            os.makedirs('output')
+
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=3)
 

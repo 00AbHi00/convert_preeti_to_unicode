@@ -117,7 +117,6 @@ if __name__ == "__main__":
     root = Tk()
     root.title("Nepali Unicode Converter")
     # root.geometry(f"{root.winfo_screenwidth()}x{root.winfo_screenheight()}")  # full page
-
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=3)
 
